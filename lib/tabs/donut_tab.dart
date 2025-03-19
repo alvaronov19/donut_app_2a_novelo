@@ -23,7 +23,7 @@ class DonutTab extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         //Determinar numero de columnas
         crossAxisCount: 2,
-        childAspectRatio: 1 / 1.5),
+        childAspectRatio: 1 / 1.6),
       itemBuilder: (context, index) {
         //Elemento individual de la cuadricula
         return DonutTile(
