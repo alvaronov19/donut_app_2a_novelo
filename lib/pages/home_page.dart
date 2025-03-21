@@ -1,4 +1,4 @@
-import 'package:donut_app_2a_novelo/tabs/burger_tab.dart';
+import 'package:donut_app_2a_novelo/tabs/burguer_tab.dart';
 import 'package:donut_app_2a_novelo/tabs/donut_tab.dart';
 import 'package:donut_app_2a_novelo/tabs/pancakes_tab.dart';
 import 'package:donut_app_2a_novelo/tabs/pizza_tab.dart';
@@ -14,70 +14,86 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //Lista de Tabs
   List<Widget> myTabs = [
-    //Donut tan
-    MyTab(iconPath: 'lib/icons/donut.png'),
-    //Burger Tab
-    MyTab(iconPath: 'lib/icons/burger.png'),
-    //Smoothie Tab
-    MyTab(iconPath: 'lib/icons/smoothie.png'),
-    //Pancake Tab
-    MyTab(iconPath: 'lib/icons/pancakes.png'),
-    //Pizza Tab  
-    MyTab(iconPath: 'lib/icons/pizza.png'),
+    //DonutTab
+    MyTab(iconPath: "lib/icons/donut.png"),
+    //BurgerTab
+    MyTab(iconPath: "lib/icons/burger.png"),
+    //PizzaTab
+    MyTab(iconPath: "lib/icons/pizza.png"),
+    //SmoothieTab
+    MyTab(iconPath: "lib/icons/smoothie.png"),
+    //PancakesTab
+    MyTab(iconPath: "lib/icons/pancakes.png"),
   ];
+
+  int totalItems = 0;
+  double totalPrice = 0.0;
+
+  void updateCart(int items, double price) {
+    setState(() {
+      totalItems += items;
+      totalPrice += price;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //Este wdget sirve para gestionar las pestañas
     return DefaultTabController(
-      length: myTabs.length,
+      length: 5,
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            //Icono de la izquierda
-            leading: Icon(
-              Icons.menu,
-              color: Colors.grey[800],
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 24.0),
-                child: Icon(Icons.person),
-              )
-            ],
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          //Icono de la izquierda
+          leading: Icon(
+            Icons.menu,
+            color: Colors.grey[800],
           ),
-          body: Column(
-            children: [
-              //Texxto "I want to eat"
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 36, vertical: 18),
-                child: Row(
-                  children: [
-                    Text("I want to",
-                    style: TextStyle(fontSize: 32),),
-                    Text(
-                      "Eat", 
-                      style: TextStyle( 
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: Icon(Icons.person),
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            //Texto "I want to eat"
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 36.0, vertical: 18.0),
+              child: Row(
+                children: [
+                  Text(
+                    "I want to ",
+                    style: TextStyle(fontSize: 32),
+                  ),
+                  Text(
+                    "Eat",
+                    style: TextStyle(
+                        // Tamaño de letra
+                        fontSize: 32,
+                        // Negritas
+                        fontWeight: FontWeight.bold,
+                        // Subrayado
+                        decoration: TextDecoration.underline),
                   )
                 ],
               ),
             ),
-            //Tab bar (Pestañas)
+
+            //Tab bar
             TabBar(tabs: myTabs),
-            //Tab bar View (Contenido de pestañas)
+            //Tab bar view
             Expanded(
-              child: TabBarView(children: [
-                DonutTab(),
-                BurgerTab(),
-                SmoothieTab(),
-                PancakesTab(),
-                PizzaTab(),
-              ]),
-            ),
+                child: TabBarView(children: [
+              DonutTab(onAddToCart: updateCart),
+              BurgerTab(onAddToCart: updateCart),
+              PizzaTab(onAddToCart: updateCart),
+              SmoothieTab(onAddToCart: updateCart),
+              PancakesTab(onAddToCart: updateCart)
+            ])),
             //Carrito
             Container(
               color: Colors.white,
@@ -88,13 +104,12 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.only(left: 28),
                     child: Column(
-                      //Alinear a la izquierda
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('2 items |\$ 45.00',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                        Text(
+                          '$totalItems Items | \$$totalPrice',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           'Delivery Charges Included',
@@ -107,17 +122,18 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.pink,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 24, vertical: 12)),
-                      child: Text(
-                          'View Cart',
-                          style: TextStyle(color: Colors.white),
-                        )),
+                      child: const Text(
+                        'View Cart',
+                        style: TextStyle(color: Colors.white),
+                      ))
                 ],
               ),
             )
           ],
-        )),
+        ),
+      ),
     );
   }
 }
